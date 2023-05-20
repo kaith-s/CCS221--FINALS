@@ -27,7 +27,7 @@ while CAMERA.isOpened():
     frame = cv2.resize(frame,(res,camera_height))
 
     # The green rectangle 
-    cv2.rectangle(frame, (300, 75), (650, 425), (0, 255, 0), 2)
+    cv2.rectangle(frame, (175, 100), (450, 350), (0, 255, 0), 2)
 
     # Show the frame 
     cv2.imshow("Capturing", frame)
@@ -43,7 +43,6 @@ while CAMERA.isOpened():
         raw_frame_type_1.append(frame)
 
         # Preview 
-        plt.imshow(frame) 
         plt.show()
 
     elif key & 0xFF == ord('2'): 
@@ -51,7 +50,6 @@ while CAMERA.isOpened():
         raw_frame_type_2.append(frame)
 
         # Preview 
-        plt.imshow(frame) 
         plt.show()
 
     elif key & 0xFF == ord('3'): 
@@ -59,7 +57,6 @@ while CAMERA.isOpened():
         raw_frame_type_3.append(frame)
 
         # Preview 
-        plt.imshow(frame) 
         plt.show()
 
     elif key & 0xFF == ord('4'):
@@ -67,11 +64,10 @@ while CAMERA.isOpened():
         raw_frame_type_4.append(frame)
 
         # Preview 
-        plt.imshow(frame) 
         plt.show()
 
 #Camera 
-CAMERA.realease() 
+CAMERA.release() 
 cv2.destroyAllWindows()
 
 save_width =399 
@@ -91,7 +87,7 @@ print('img4:',len(raw_frame_type_4))
 #Crop the images 
 for i, frame in enumerate (raw_frame_type_1): 
     #get roi 
-    roi = frame [ 75 + 2:425-2, 300 + 2:650-2]
+    roi = frame [ 100 + 2:350-2, 175 + 2:450-2]
 
     #Parse BRG to RGB 
     roi = cv2.cvtColor(roi,cv2.COLOR_BGR2RGB)
@@ -105,7 +101,7 @@ for i, frame in enumerate (raw_frame_type_1):
 for i, frame in enumerate (raw_frame_type_2): 
     
     #get roi 
-    roi = frame [ 75 + 2:425-2, 300 + 2:650-2]
+    roi = frame [100 + 2:350-2, 175 + 2:450-2]
 
     #Parse BRG to RGB 
     roi = cv2.cvtColor(roi,cv2.COLOR_BGR2RGB)
@@ -119,7 +115,7 @@ for i, frame in enumerate (raw_frame_type_2):
 for i, frame in enumerate (raw_frame_type_3): 
     
     #get roi 
-    roi = frame [ 75 + 2:425-2, 300 + 2:650-2]
+    roi = frame [100 + 2:350-2, 175 + 2:450-2]
 
     #Parse BRG to RGB 
     roi = cv2.cvtColor(roi,cv2.COLOR_BGR2RGB)
@@ -133,7 +129,7 @@ for i, frame in enumerate (raw_frame_type_3):
 for i, frame in enumerate (raw_frame_type_4): 
     
     #get roi 
-    roi = frame [ 75 + 2:425-2, 300 + 2:650-2]
+    roi = frame [100 + 2:350-2, 175 + 2:450-2]
 
     #Parse BRG to RGB 
     roi = cv2.cvtColor(roi,cv2.COLOR_BGR2RGB)
@@ -146,6 +142,7 @@ for i, frame in enumerate (raw_frame_type_4):
 
 from glob import glob 
 from keras import preprocessing
+from keras.utils import load_img, img_to_array, array_to_img
  
 width = 96
 height = 96 
@@ -155,27 +152,29 @@ images_type_2 = []
 images_type_3 = []
 images_type_4 = []
 
-for image_path in glob ('img_1*.*'): 
-    image = preprocessing.image.load_img(image_path, target_size =(width,height))
-    x = preprocessing.image.img_to_array(image) 
+#Directory
+
+for image_path in glob ('img_1/*.png*'): 
+    image = load_img(image_path, target_size =(width,height))
+    x = img_to_array(image) 
 
     images_type_1.append(x)
 
-for image_path in glob ('img_2*.*'): 
-    image = preprocessing.image.load_img(image_path, target_size =(width,height))
-    x = preprocessing.image.img_to_array(image) 
+for image_path in glob ('img_2/*.png*'): 
+    image = load_img(image_path, target_size =(width,height))
+    x = img_to_array(image) 
 
     images_type_2.append(x)
 
-for image_path in glob ('img_3*.*'): 
-    image = preprocessing.image.load_img(image_path, target_size =(width,height))
-    x = preprocessing.image.img_to_array(image) 
+for image_path in glob ('img_3/*.png*'): 
+    image = load_img(image_path, target_size =(width,height))
+    x = img_to_array(image) 
 
     images_type_3.append(x)
 
-for image_path in glob ('img_4*.*'): 
-    image = preprocessing.image.load_img(image_path, target_size =(width,height))
-    x = preprocessing.image.img_to_array(image) 
+for image_path in glob ('img_4/*.png*'): 
+    image = load_img(image_path, target_size =(width,height))
+    x = img_to_array(image) 
 
     images_type_4.append(x)
 
@@ -183,7 +182,7 @@ plt.figure(figsize = (12,8))
  
 for i, x in enumerate (images_type_1[:5]): 
     plt.subplot (1,5, i + 1)
-    image = preprocessing.image.array_to_img(x) 
+    image = array_to_img(x) 
     plt.imshow(image)
 
     plt.axis ('off')
@@ -191,9 +190,9 @@ for i, x in enumerate (images_type_1[:5]):
 
 plt.show()
 
-for i, x in enumerate (images_type_1[:5]): 
+for i, x in enumerate (images_type_2[:5]): 
     plt.subplot (1,5, i + 1)
-    image = preprocessing.image.array_to_img(x) 
+    image = array_to_img(x) 
     plt.imshow(image)
 
     plt.axis ('off')
@@ -201,9 +200,9 @@ for i, x in enumerate (images_type_1[:5]):
 
 plt.show()
 
-for i, x in enumerate (images_type_1[:5]): 
+for i, x in enumerate (images_type_3[:5]): 
     plt.subplot (1,5, i + 1)
-    image = preprocessing.image.array_to_img(x) 
+    image = array_to_img(x) 
     plt.imshow(image)
 
     plt.axis ('off')
@@ -211,9 +210,9 @@ for i, x in enumerate (images_type_1[:5]):
 
 plt.show()
 
-for i, x in enumerate (images_type_1[:5]): 
+for i, x in enumerate (images_type_4[:5]): 
     plt.subplot (1,5, i + 1)
-    image = preprocessing.image.array_to_img(x) 
+    image = array_to_img(x) 
     plt.imshow(image)
 
     plt.axis ('off')
@@ -237,7 +236,6 @@ print (X_type_2.shape)
 print (X_type_3.shape)
 print (X_type_4.shape)
 
-X_type_2
 
 X = np.concatenate ((X_type_1, X_type_2), axis = 0)
 
@@ -270,7 +268,7 @@ if len (y_type_4):
 
 y = to_categorical (y, num_classes=len (class_names))
 
-y.shape
+print (y.shape)
 
 #CNN Config
 
@@ -293,7 +291,7 @@ dense_2_drop = 0.2
 
 #values you can adjust
 lr = 0.001
-epochs = 5
+epochs = 15
 batch_size = 10
 color_channels = 3
 
@@ -310,7 +308,7 @@ def build_model (conv_1_drop = conv_1_drop, conv_2_drop = conv_2_drop,
     
     model.add (MaxPooling2D (pool_size=(2,2)))
 
-    model.add (Dropout (conv_1_drop))
+    model.add (Dropout (conv_2_drop))
 
     #--
 
@@ -358,7 +356,7 @@ print(history)
 # Model evaluation
 
 scores = model.evaluate (X, y, verbose = 0)
-print ("Accuracy: %/2f%%" % (scores [1] * 100))
+print ("Accuracy: %.2f%%" % (scores [1] * 100))
 
 plt.plot (history.history ['accuracy'])
 plt.plot (history.history ['val_accuracy'])
@@ -391,10 +389,10 @@ def plt_show (img):
     plt.imshow (img)
     plt.show()
 
-glasses = 'img_1/10.png'
-mug = 'img_2/10.png'
-key = 'img_3/10.png'
-mouse = 'img_4/10.png'
+glasses = 'img_1/9.png'
+mug = 'img_2/9.png'
+key = 'img_3/9.png'
+mouse = 'img_4/9.png'
 
 imgs = (glasses, mug, key, mouse)
 
@@ -402,9 +400,10 @@ imgs = (glasses, mug, key, mouse)
 
 classes = None
 predicted_classes = []
+true_labels = []
 
 for i in range (len(imgs)):
-    type_ = preprocessing.image.load_img(imgs[i], target_size = (width, height))
+    type_ = load_img(imgs[i], target_size = (width, height))
     plt.imshow(type_)
     plt.show()
 
@@ -413,12 +412,14 @@ for i in range (len(imgs)):
     index = np.argmax (prediction)
     print(class_names[index])
     classes = class_names[index]
-    predicted_classes.append 
+    predicted_classes.append (class_names[index])
 
-cm = confusion_matrix (class_names, predicted_classes)
+    true_labels.append(class_names[i % len (class_names)])
+
+cm = confusion_matrix (true_labels, predicted_classes)
 f = sns.heatmap (cm, xticklabels= class_names, yticklabels= predicted_classes, annot= True)
 
-type_1 = preprocessing.image.load_img('img_1/10.png', target_size = (width, height))
+type_1 = load_img('img_1/9.png', target_size = (width, height))
 
 plt.imshow(type_1)   
 plt.show()
@@ -429,7 +430,7 @@ index = np.argmax (prediction)
     
 print(class_names[index])
 
-type_2 = preprocessing.image.load_img('img_2/10.png', target_size = (width, height))
+type_2 = load_img('img_2/9.png', target_size = (width, height))
 
 plt.imshow(type_2)   
 plt.show()
@@ -440,7 +441,7 @@ index = np.argmax (prediction)
     
 print(class_names[index])
 
-type_3 = preprocessing.image.load_img('img_3/10.png', target_size = (width, height))
+type_3 = load_img('img_3/9.png', target_size = (width, height))
 
 plt.imshow(type_3)   
 plt.show()
@@ -451,7 +452,7 @@ index = np.argmax (prediction)
     
 print(class_names[index])
 
-type_4 = preprocessing.image.load_img('img_4/10.png', target_size = (width, height))
+type_4 = load_img('img_4/9.png', target_size = (width, height))
 
 plt.imshow(type_4)   
 plt.show()
@@ -466,26 +467,30 @@ print(class_names[index])
 
 #Live Prediction using camera
 
-from keras.applications import inception_v3
+from keras.applications.inception_v3 import InceptionV3
+import cv2
+import numpy as np
 
-import time
-
-CAMERA = cv2.videoCaptue (0)
+CAMERA = cv2.VideoCapture (0)   
 camera_heigth = 500
 
 while (True):
     _, frame = CAMERA.read()
+    if frame is None:
+        continue
 
     #Flip
     frame = cv2.flip(frame,1)
 
     #Rescale the imagess output
     aspect = frame.shape[1] / float(frame.shape[0])
-    res = int(aspect* camera_height)
+
+    res = int(aspect * camera_height)
     frame = cv2.resize(frame, (res, camera_height))
+    
 
     #Get roi
-    roi = frame [75+2:452-2, 300+2:650-2]
+    roi = frame [100+2:350-2, 175+2:450-2]
 
     #Parse BRG to RGB
     roi = cv2.cvtColor (roi, cv2.COLOR_BGR2RGB)
@@ -493,39 +498,37 @@ while (True):
     #Adjustment alignment
     roi = cv2.resize (roi, (width, height))
     roi_x = np.expand_dims (roi, axis=0)
+    
 
     predictions = model.predict (roi_x)
     type_1_x, type_2_x, type_3_x, type_4_x = predictions[0]
 
     #The green rectangle
-    cv2.rectangle (frame, (300, 75), (650,425), (240,100,0), 2)
+    cv2.rectangle (frame, (175, 100), (450, 350), (0, 255, 0), 2)
 
     #Predictions / Labels
+    class_names = ['GLASSES', 'MUG', 'KEY', 'MOUSE']
+
 
     type_1_txt = '{} - {}%'.format(class_names[0], int(type_1_x*100))
     cv2.putText(frame, type_1_txt, (70, 210), cv2.FONT_HERSHEY_SIMPLEX, 0.6, (240, 240, 240), 2)
 
-    type_2_txt = '{} - {}%'.format(class_names[0], int(type_2_x*100))
+    type_2_txt = '{} - {}%'.format(class_names[1], int(type_2_x*100))
     cv2.putText(frame, type_2_txt, (70, 235), cv2.FONT_HERSHEY_SIMPLEX, 0.6, (240, 240, 240), 2)
 
-    type_3_txt = '{} - {}%'.format(class_names[0], int(type_3_x*100))
+    type_3_txt = '{} - {}%'.format(class_names[2], int(type_3_x*100))
     cv2.putText(frame, type_3_txt, (70, 255), cv2.FONT_HERSHEY_SIMPLEX, 0.6, (240, 240, 240), 2)
 
-    type_4_txt = '{} - {}%'.format(class_names[0], int(type_4_x*100))
+    type_4_txt = '{} - {}%'.format(class_names[3], int(type_4_x*100))
     cv2.putText(frame, type_4_txt, (70, 275), cv2.FONT_HERSHEY_SIMPLEX, 0.6, (240, 240, 240), 2)
 
     cv2.imshow("Real time object detection", frame)
 
     #Controls q = quit/ s = capturing
     key = cv2.waitKey(1)
-
     if key & 0xff == ord('q'):
         break
-
-    #preview
-    plt.imshow (frame)
-    plt.show()
-
+  
     #Camera
-    CAMERA.release()
-    cv2.destroyAllWindows()
+CAMERA.release()
+cv2.destroyAllWindows()
